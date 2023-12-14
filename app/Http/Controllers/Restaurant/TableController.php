@@ -153,7 +153,7 @@ class TableController extends Controller
 
         if (request()->ajax()) {
             try {
-                $input = $request->only(['name', 'description']);
+                $input = $request->only(['name', 'description', 'floor', 'total_seats']);
                 $business_id = $request->session()->get('user.business_id');
 
                 $table = ResTable::where('business_id', $business_id)->findOrFail($id);
