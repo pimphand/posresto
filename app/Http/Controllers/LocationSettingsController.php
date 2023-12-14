@@ -6,6 +6,7 @@ use App\BusinessLocation;
 use App\InvoiceLayout;
 use App\InvoiceScheme;
 use App\Printer;
+use App\System;
 use Illuminate\Http\Request;
 
 class LocationSettingsController extends Controller
@@ -14,6 +15,7 @@ class LocationSettingsController extends Controller
      * All class instance.
      */
     protected $printReceiptOnInvoice;
+    protected $receiptPrinterType;
 
     /**
      * Create a new controller instance.
@@ -34,8 +36,9 @@ class LocationSettingsController extends Controller
     public function index($location_id)
     {
         //Check for locations access permission
-        if (! auth()->user()->can('business_settings.access') ||
-            ! auth()->user()->can_access_this_location($location_id)
+        if (
+            !auth()->user()->can('business_settings.access') ||
+            !auth()->user()->can_access_this_location($location_id)
         ) {
             abort(403, 'Unauthorized action.');
         }
@@ -43,7 +46,7 @@ class LocationSettingsController extends Controller
         $business_id = request()->session()->get('user.business_id');
 
         $location = BusinessLocation::where('business_id', $business_id)
-                        ->findorfail($location_id);
+            ->findorfail($location_id);
 
         $printers = Printer::forDropdown($business_id);
 
@@ -51,11 +54,11 @@ class LocationSettingsController extends Controller
         $receiptPrinterType = $this->receiptPrinterType;
 
         $invoice_layouts = InvoiceLayout::where('business_id', $business_id)
-                            ->get()
-                            ->pluck('name', 'id');
+            ->get()
+            ->pluck('name', 'id');
         $invoice_schemes = InvoiceScheme::where('business_id', $business_id)
-                            ->get()
-                            ->pluck('name', 'id');
+            ->get()
+            ->pluck('name', 'id');
 
         return view('location_settings.index')
             ->with(compact('location', 'printReceiptOnInvoice', 'receiptPrinterType', 'printers', 'invoice_layouts', 'invoice_schemes'));
@@ -71,8 +74,9 @@ class LocationSettingsController extends Controller
     {
         try {
             //Check for locations access permission
-            if (! auth()->user()->can('business_settings.access') ||
-                ! auth()->user()->can_access_this_location($location_id)
+            if (
+                !auth()->user()->can('business_settings.access') ||
+                !auth()->user()->can_access_this_location($location_id)
             ) {
                 abort(403, 'Unauthorized action.');
             }
@@ -87,20 +91,57 @@ class LocationSettingsController extends Controller
             $business_id = request()->session()->get('user.business_id');
 
             $location = BusinessLocation::where('business_id', $business_id)
-                            ->findorfail($location_id);
+                ->findorfail($location_id);
 
             $location->fill($input);
             $location->update();
 
-            $output = ['success' => 1,
+            $output = [
+                'success' => 1,
                 'msg' => __('receipt.receipt_settings_updated'),
             ];
         } catch (\Exception $e) {
-            $output = ['success' => 0,
+            $output = [
+                'success' => 0,
                 'msg' => __('messages.something_went_wrong'),
             ];
         }
 
         return back()->with('status', $output);
+    }
+
+    public function settingSizePaper(Request $request)
+    {
+        if ($request->ajax()) {
+            if ($request->size_paper_value) {
+                $size = explode(',', $request->size_paper_value);
+                $value = [
+                    'panjang' => $size[0],
+                    'lebar' => $size[1],
+                ];
+                $system = System::updateOrCreate(['key' => $request->size_paper], ['value' => json_encode($value)]);
+            }
+            if ($request->wifi) {
+                $system = System::updateOrCreate(['key' => 'wifi'], ['value' => $request->wifi]);
+            }
+
+            if ($request->instagram) {
+                $system = System::updateOrCreate(['key' => 'instagram'], ['value' => $request->instagram]);
+            }
+
+            return [
+                'success' => true
+            ];
+        }
+        $system = System::where('key', 'size_paper')->first();
+        $data = [];
+        if ($system) {
+            $data = json_decode($system->value);
+        }
+
+        $wifi = System::where('key', 'wifi')->first();
+        $instagram = System::where('key', 'instagram')->first();
+
+        return view('location_settings.size_papper', compact('data', 'wifi', 'instagram'));
     }
 }

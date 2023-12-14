@@ -17,36 +17,35 @@
 <!-- Main content -->
 <section class="content">
 
-	<div class="box">
+    <div class="box">
         <div class="box-header">
-        	<h3 class="box-title">@lang( 'restaurant.all_your_tables' )</h3>
+            <h3 class="box-title">@lang( 'restaurant.all_your_tables' )</h3>
             @can('restaurant.create')
-            	<div class="box-tools">
-                    <button type="button" class="btn btn-block btn-primary btn-modal" 
-                    	data-href="{{action([\App\Http\Controllers\Restaurant\TableController::class, 'create'])}}" 
-                    	data-container=".tables_modal">
-                    	<i class="fa fa-plus"></i> @lang( 'messages.add' )</button>
-                </div>
+            <div class="box-tools">
+                <button type="button" class="btn btn-block btn-primary btn-modal"
+                    data-href="{{action([\App\Http\Controllers\Restaurant\TableController::class, 'create'])}}"
+                    data-container=".tables_modal">
+                    <i class="fa fa-plus"></i> @lang( 'messages.add' )</button>
+            </div>
             @endcan
         </div>
         <div class="box-body">
             @can('restaurant.view')
-            	<table class="table table-bordered table-striped" id="tables_table">
-            		<thead>
-            			<tr>
-            				<th>@lang( 'restaurant.table' )</th>
-                            <th>@lang( 'purchase.business_location' )</th>
-            				<th>@lang( 'restaurant.description' )</th>
-            				<th>@lang( 'messages.action' )</th>
-            			</tr>
-            		</thead>
-            	</table>
+            <table class="table table-bordered table-striped" id="tables_table">
+                <thead>
+                    <tr>
+                        <th>Lantai</th>
+                        <th>@lang( 'purchase.business_location' )</th>
+                        <th>@lang( 'restaurant.description' )</th>
+                        <th>@lang( 'messages.action' )</th>
+                    </tr>
+                </thead>
+            </table>
             @endcan
         </div>
     </div>
 
-    <div class="modal fade tables_modal" tabindex="-1" role="dialog" 
-    	aria-labelledby="gridSystemModalLabel">
+    <div class="modal fade tables_modal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
     </div>
 
 </section>
@@ -55,8 +54,8 @@
 @endsection
 
 @section('javascript')
-    <script type="text/javascript">
-        $(document).ready(function(){
+<script type="text/javascript">
+    $(document).ready(function(){
 
             $(document).on('submit', 'form#table_add_form', function(e){
                 e.preventDefault();
@@ -156,5 +155,5 @@
                 });
             });
         });
-    </script>
+</script>
 @endsection

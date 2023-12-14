@@ -302,6 +302,7 @@ Route::middleware(['setData', 'auth', 'SetSessionData', 'language', 'timezone', 
         Route::get('settings', [LocationSettingsController::class, 'index'])->name('settings');
         Route::post('settings', [LocationSettingsController::class, 'updateSettings'])->name('settings_update');
     });
+    Route::get('settings-size-paper', [LocationSettingsController::class, 'settingSizePaper'])->name('settingSizePaper');
 
     //Business Locations...
     Route::post('business-location/check-location-id', [BusinessLocationController::class, 'checkLocationId']);
@@ -457,7 +458,7 @@ Route::middleware(['setData', 'auth', 'SetSessionData', 'language', 'timezone', 
     Route::resource('warranties', WarrantyController::class);
 
     Route::resource('dashboard-configurator', DashboardConfiguratorController::class)
-    ->only(['edit', 'update']);
+        ->only(['edit', 'update']);
 
     Route::get('view-media/{model_id}', [SellController::class, 'viewMedia']);
 

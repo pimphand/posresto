@@ -1030,6 +1030,7 @@ class ComposerStaticInitc24849ce517e595851d0c0a3e2c94573
         'App\\Currency' => __DIR__ . '/../..' . '/app/Currency.php',
         'App\\CustomerGroup' => __DIR__ . '/../..' . '/app/CustomerGroup.php',
         'App\\DashboardConfiguration' => __DIR__ . '/../..' . '/app/DashboardConfiguration.php',
+        'App\\DetailTable' => __DIR__ . '/../..' . '/app/DetailTable.php',
         'App\\Discount' => __DIR__ . '/../..' . '/app/Discount.php',
         'App\\DocumentAndNote' => __DIR__ . '/../..' . '/app/DocumentAndNote.php',
         'App\\Events\\PurchaseCreatedOrModified' => __DIR__ . '/../..' . '/app/Events/PurchaseCreatedOrModified.php',

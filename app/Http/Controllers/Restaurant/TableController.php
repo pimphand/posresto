@@ -18,7 +18,7 @@ class TableController extends Controller
      */
     public function index()
     {
-        if (! auth()->user()->can('access_tables')) {
+        if (!auth()->user()->can('access_tables')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -26,18 +26,20 @@ class TableController extends Controller
             $business_id = request()->session()->get('user.business_id');
 
             $tables = ResTable::where('res_tables.business_id', $business_id)
-                        ->join('business_locations AS BL', 'res_tables.location_id', '=', 'BL.id')
-                        ->select(['res_tables.name as name', 'BL.name as location',
-                            'res_tables.description', 'res_tables.id', ]);
+                ->join('business_locations AS BL', 'res_tables.location_id', '=', 'BL.id')
+                ->select([
+                    'res_tables.name as name', 'BL.name as location',
+                    'res_tables.description', 'res_tables.id',
+                ]);
 
             return Datatables::of($tables)
                 ->addColumn(
                     'action',
-                    '@role("Admin#'.$business_id.'")
+                    '@role("Admin#' . $business_id . '")
                     <button data-href="{{action(\'App\Http\Controllers\Restaurant\TableController@edit\', [$id])}}" class="btn btn-xs btn-primary edit_table_button"><i class="glyphicon glyphicon-edit"></i> @lang("messages.edit")</button>
                         &nbsp;
                     @endrole
-                    @role("Admin#'.$business_id.'")
+                    @role("Admin#' . $business_id . '")
                         <button data-href="{{action(\'App\Http\Controllers\Restaurant\TableController@destroy\', [$id])}}" class="btn btn-xs btn-danger delete_table_button"><i class="glyphicon glyphicon-trash"></i> @lang("messages.delete")</button>
                     @endrole'
                 )
@@ -56,7 +58,7 @@ class TableController extends Controller
      */
     public function create()
     {
-        if (! auth()->user()->can('access_tables')) {
+        if (!auth()->user()->can('access_tables')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -75,25 +77,27 @@ class TableController extends Controller
      */
     public function store(Request $request)
     {
-        if (! auth()->user()->can('access_tables')) {
+        if (!auth()->user()->can('access_tables')) {
             abort(403, 'Unauthorized action.');
         }
 
         try {
-            $input = $request->only(['name', 'description', 'location_id']);
+            $input = $request->only(['name', 'description', 'location_id', 'floor', 'total_seats']);
             $business_id = $request->session()->get('user.business_id');
             $input['business_id'] = $business_id;
             $input['created_by'] = $request->session()->get('user.id');
 
             $table = ResTable::create($input);
-            $output = ['success' => true,
+            $output = [
+                'success' => true,
                 'data' => $table,
                 'msg' => __('lang_v1.added_success'),
             ];
         } catch (\Exception $e) {
-            \Log::emergency('File:'.$e->getFile().'Line:'.$e->getLine().'Message:'.$e->getMessage());
+            \Log::emergency('File:' . $e->getFile() . 'Line:' . $e->getLine() . 'Message:' . $e->getMessage());
 
-            $output = ['success' => false,
+            $output = [
+                'success' => false,
                 'msg' => __('messages.something_went_wrong'),
             ];
         }
@@ -108,7 +112,7 @@ class TableController extends Controller
      */
     public function show()
     {
-        if (! auth()->user()->can('access_tables')) {
+        if (!auth()->user()->can('access_tables')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -122,7 +126,7 @@ class TableController extends Controller
      */
     public function edit($id)
     {
-        if (! auth()->user()->can('access_tables')) {
+        if (!auth()->user()->can('access_tables')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -143,7 +147,7 @@ class TableController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (! auth()->user()->can('access_tables')) {
+        if (!auth()->user()->can('access_tables')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -157,13 +161,15 @@ class TableController extends Controller
                 $table->description = $input['description'];
                 $table->save();
 
-                $output = ['success' => true,
+                $output = [
+                    'success' => true,
                     'msg' => __('lang_v1.updated_success'),
                 ];
             } catch (\Exception $e) {
-                \Log::emergency('File:'.$e->getFile().'Line:'.$e->getLine().'Message:'.$e->getMessage());
+                \Log::emergency('File:' . $e->getFile() . 'Line:' . $e->getLine() . 'Message:' . $e->getMessage());
 
-                $output = ['success' => false,
+                $output = [
+                    'success' => false,
                     'msg' => __('messages.something_went_wrong'),
                 ];
             }
@@ -179,7 +185,7 @@ class TableController extends Controller
      */
     public function destroy($id)
     {
-        if (! auth()->user()->can('access_tables')) {
+        if (!auth()->user()->can('access_tables')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -190,13 +196,15 @@ class TableController extends Controller
                 $table = ResTable::where('business_id', $business_id)->findOrFail($id);
                 $table->delete();
 
-                $output = ['success' => true,
+                $output = [
+                    'success' => true,
                     'msg' => __('lang_v1.deleted_success'),
                 ];
             } catch (\Exception $e) {
-                \Log::emergency('File:'.$e->getFile().'Line:'.$e->getLine().'Message:'.$e->getMessage());
+                \Log::emergency('File:' . $e->getFile() . 'Line:' . $e->getLine() . 'Message:' . $e->getMessage());
 
-                $output = ['success' => false,
+                $output = [
+                    'success' => false,
                     'msg' => __('messages.something_went_wrong'),
                 ];
             }

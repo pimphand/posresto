@@ -66,6 +66,7 @@ return array(
     'App\\Currency' => $baseDir . '/app/Currency.php',
     'App\\CustomerGroup' => $baseDir . '/app/CustomerGroup.php',
     'App\\DashboardConfiguration' => $baseDir . '/app/DashboardConfiguration.php',
+    'App\\DetailTable' => $baseDir . '/app/DetailTable.php',
     'App\\Discount' => $baseDir . '/app/Discount.php',
     'App\\DocumentAndNote' => $baseDir . '/app/DocumentAndNote.php',
     'App\\Events\\PurchaseCreatedOrModified' => $baseDir . '/app/Events/PurchaseCreatedOrModified.php',

@@ -22,12 +22,12 @@ class AdminSidebarMenu
         }
 
         Menu::create('admin-sidebar-menu', function ($menu) {
-            $enabled_modules = ! empty(session('business.enabled_modules')) ? session('business.enabled_modules') : [];
+            $enabled_modules = !empty(session('business.enabled_modules')) ? session('business.enabled_modules') : [];
 
-            $common_settings = ! empty(session('business.common_settings')) ? session('business.common_settings') : [];
-            $pos_settings = ! empty(session('business.pos_settings')) ? json_decode(session('business.pos_settings'), true) : [];
+            $common_settings = !empty(session('business.common_settings')) ? session('business.common_settings') : [];
+            $pos_settings = !empty(session('business.pos_settings')) ? json_decode(session('business.pos_settings'), true) : [];
 
-            $is_admin = auth()->user()->hasRole('Admin#'.session('business.id')) ? true : false;
+            $is_admin = auth()->user()->hasRole('Admin#' . session('business.id')) ? true : false;
             //Home
             $menu->url(action([\App\Http\Controllers\HomeController::class, 'index']), __('home.home'), ['icon' => 'fa fas fa-tachometer-alt', 'active' => request()->segment(1) == 'home'])->order(5);
 
@@ -94,7 +94,7 @@ class AdminSidebarMenu
                             );
                         }
 
-                        if (! empty(env('GOOGLE_MAP_API_KEY'))) {
+                        if (!empty(env('GOOGLE_MAP_API_KEY'))) {
                             $sub->url(
                                 action([\App\Http\Controllers\ContactController::class, 'contactMap']),
                                 __('lang_v1.map'),
@@ -107,10 +107,12 @@ class AdminSidebarMenu
             }
 
             //Products dropdown
-            if (auth()->user()->can('product.view') || auth()->user()->can('product.create') ||
+            if (
+                auth()->user()->can('product.view') || auth()->user()->can('product.create') ||
                 auth()->user()->can('brand.view') || auth()->user()->can('unit.view') ||
                 auth()->user()->can('category.view') || auth()->user()->can('brand.create') ||
-                auth()->user()->can('unit.create') || auth()->user()->can('category.create')) {
+                auth()->user()->can('unit.create') || auth()->user()->can('category.create')
+            ) {
                 $menu->dropdown(
                     __('sale.products'),
                     function ($sub) {
@@ -121,7 +123,7 @@ class AdminSidebarMenu
                                 ['icon' => 'fa fas fa-list', 'active' => request()->segment(1) == 'products' && request()->segment(2) == '']
                             );
                         }
-                        
+
 
                         if (auth()->user()->can('product.create')) {
                             $sub->url(
@@ -179,7 +181,7 @@ class AdminSidebarMenu
                         }
                         if (auth()->user()->can('category.view') || auth()->user()->can('category.create')) {
                             $sub->url(
-                                action([\App\Http\Controllers\TaxonomyController::class, 'index']).'?type=product',
+                                action([\App\Http\Controllers\TaxonomyController::class, 'index']) . '?type=product',
                                 __('category.categories'),
                                 ['icon' => 'fa fas fa-tags', 'active' => request()->segment(1) == 'taxonomies' && request()->get('type') == 'product']
                             );
@@ -207,7 +209,7 @@ class AdminSidebarMenu
                 $menu->dropdown(
                     __('purchase.purchases'),
                     function ($sub) use ($common_settings) {
-                        if (! empty($common_settings['enable_purchase_requisition']) && (auth()->user()->can('purchase_requisition.view_all') || auth()->user()->can('purchase_requisition.view_own'))) {
+                        if (!empty($common_settings['enable_purchase_requisition']) && (auth()->user()->can('purchase_requisition.view_all') || auth()->user()->can('purchase_requisition.view_own'))) {
                             $sub->url(
                                 action([\App\Http\Controllers\PurchaseRequisitionController::class, 'index']),
                                 __('lang_v1.purchase_requisition'),
@@ -215,7 +217,7 @@ class AdminSidebarMenu
                             );
                         }
 
-                        if (! empty($common_settings['enable_purchase_order']) && (auth()->user()->can('purchase_order.view_all') || auth()->user()->can('purchase_order.view_own'))) {
+                        if (!empty($common_settings['enable_purchase_order']) && (auth()->user()->can('purchase_order.view_all') || auth()->user()->can('purchase_order.view_own'))) {
                             $sub->url(
                                 action([\App\Http\Controllers\PurchaseOrderController::class, 'index']),
                                 __('lang_v1.purchase_order'),
@@ -252,7 +254,7 @@ class AdminSidebarMenu
                 $menu->dropdown(
                     __('sale.sale'),
                     function ($sub) use ($enabled_modules, $is_admin, $pos_settings) {
-                        if (! empty($pos_settings['enable_sales_order']) && ($is_admin || auth()->user()->hasAnyPermission(['so.view_own', 'so.view_all', 'so.create']))) {
+                        if (!empty($pos_settings['enable_sales_order']) && ($is_admin || auth()->user()->hasAnyPermission(['so.view_own', 'so.view_all', 'so.create']))) {
                             $sub->url(
                                 action([\App\Http\Controllers\SalesOrderController::class, 'index']),
                                 __('lang_v1.sales_order'),
@@ -478,10 +480,12 @@ class AdminSidebarMenu
             }
 
             //Reports dropdown
-            if (auth()->user()->can('purchase_n_sell_report.view') || auth()->user()->can('contacts_report.view')
+            if (
+                auth()->user()->can('purchase_n_sell_report.view') || auth()->user()->can('contacts_report.view')
                 || auth()->user()->can('stock_report.view') || auth()->user()->can('tax_report.view')
                 || auth()->user()->can('trending_product_report.view') || auth()->user()->can('sales_representative.view') || auth()->user()->can('register_report.view')
-                || auth()->user()->can('expense_report.view')) {
+                || auth()->user()->can('expense_report.view')
+            ) {
                 $menu->dropdown(
                     __('report.reports'),
                     function ($sub) use ($enabled_modules, $is_admin) {
@@ -495,14 +499,14 @@ class AdminSidebarMenu
                         if (config('constants.show_report_606') == true) {
                             $sub->url(
                                 action([\App\Http\Controllers\ReportController::class, 'purchaseReport']),
-                                'Report 606 ('.__('lang_v1.purchase').')',
+                                'Report 606 (' . __('lang_v1.purchase') . ')',
                                 ['icon' => 'fa fas fa-arrow-circle-down', 'active' => request()->segment(2) == 'purchase-report']
                             );
                         }
                         if (config('constants.show_report_607') == true) {
                             $sub->url(
                                 action([\App\Http\Controllers\ReportController::class, 'saleReport']),
-                                'Report 607 ('.__('business.sale').')',
+                                'Report 607 (' . __('business.sale') . ')',
                                 ['icon' => 'fa fas fa-arrow-circle-up', 'active' => request()->segment(2) == 'sale-report']
                             );
                         }
@@ -631,7 +635,7 @@ class AdminSidebarMenu
                             );
                         }
 
-                        if (auth()->user()->can('tax_report.view') && ! empty(config('constants.enable_gst_report_india'))) {
+                        if (auth()->user()->can('tax_report.view') && !empty(config('constants.enable_gst_report_india'))) {
                             $sub->url(
                                 action([\App\Http\Controllers\ReportController::class, 'gstSalesReport']),
                                 __('lang_v1.gst_sales_report'),
@@ -696,12 +700,14 @@ class AdminSidebarMenu
             }
 
             //Settings Dropdown
-            if (auth()->user()->can('business_settings.access') ||
+            if (
+                auth()->user()->can('business_settings.access') ||
                 auth()->user()->can('barcode_settings.access') ||
                 auth()->user()->can('invoice_settings.access') ||
                 auth()->user()->can('tax_rate.view') ||
                 auth()->user()->can('tax_rate.create') ||
-                auth()->user()->can('access_package_subscriptions')) {
+                auth()->user()->can('access_package_subscriptions')
+            ) {
                 $menu->dropdown(
                     __('business.settings'),
                     function ($sub) use ($enabled_modules) {
@@ -747,13 +753,21 @@ class AdminSidebarMenu
                             );
                         }
 
-                        if (in_array('tables', $enabled_modules) && auth()->user()->can('access_tables')) {
+                        if (auth()->user()->can('tax_rate.view') || auth()->user()->can('tax_rate.create')) {
                             $sub->url(
-                                action([\App\Http\Controllers\Restaurant\TableController::class, 'index']),
-                                __('restaurant.tables'),
-                                ['icon' => 'fa fas fa-table', 'active' => request()->segment(1) == 'modules' && request()->segment(2) == 'tables']
+                                action([\App\Http\Controllers\LocationSettingsController::class, 'settingSizePaper']),
+                                'Kertas Nota',
+                                ['icon' => 'fa fas fa-bolt', 'active' => request()->segment(1) == 'size-paper']
                             );
                         }
+
+                        // if (in_array('tables', $enabled_modules) && auth()->user()->can('access_tables')) {
+                        $sub->url(
+                            action([\App\Http\Controllers\Restaurant\TableController::class, 'index']),
+                            __('restaurant.tables'),
+                            ['icon' => 'fa fas fa-table', 'active' => request()->segment(1) == 'modules' && request()->segment(2) == 'tables']
+                        );
+                        // }
 
                         if (in_array('modifiers', $enabled_modules) && (auth()->user()->can('product.view') || auth()->user()->can('product.create'))) {
                             $sub->url(

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Struk Kasir</title>
+    <style>
+        .body {
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            margin: 0;
+            padding: 2px;
+        }
+
+        .container {
+            max-width: 57mm;
+            /* Adjusted width for thermal paper */
+            margin: 0 auto;
+            padding: 5px;
+            border: 1px solid #000;
+            background-color: #f5f5f5;
+        }
+
+        h2 {
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            font-size: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 5px 10px;
+            text-align: left;
+        }
+
+        th {
+            border-bottom: 1px solid #000;
+            font-weight: bold;
+        }
+
+        .total {
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .resto {
+            margin-top: 10px;
+            padding: 3;
+            text-align: center;
+        }
+
+        .keterangan-order {
+            margin: 10px 0;
+            padding: 3px;
+            text-align: left;
+        }
+
+        .keterangan-order dl {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .keterangan-order dt,
+        .keterangan-order dd {
+            margin-bottom: 5px;
+        }
+
+        .keterangan-order dt {
+            font-weight: bold;
+        }
+    </style>
+    <!-- <script>
+        function printReceipt() {
+            window.print();
+        }
+        window.onload = function () {
+            printReceipt();
+            setTimeout("self.close()", 10);
+        };
+    </script> -->
+</head>
+
+<body>
+    <div class="container body">
+        <h2>{{ env('APP_NAME') }}</h2>
+        <div class="resto">
+            <p class="">Perdipe Coffe Palagan <br>
+                Jl. Palagan no 27 <br>
+                Kab. Sleman, Di Yogyakarta <br>
+                Perdipecoffe.palagan@gmail.com <br>
+                0897794123459</p>
+            ==================================
+        </div>
+        <div class="keterangan-order">
+            <dl class="row">
+                <dt class="col-3">No Nota</dt>
+                <dd class="col-8">: 1324213431</dd>
+
+                <dt class="col-3">Waktu</dt>
+                <dd class="col-8">: 1324213431</dd>
+
+                <dt class="col-3">Order</dt>
+                <dd class="col-8">: 1324213431</dd>
+
+                <dt class="col-3">Kasir</dt>
+                <dd class="col-8">: 1324213431</dd>
+
+                <dt class="col-3">Jenis Orde</dt>
+                <dd class="col-8">: 1324213431</dd>
+
+                <dt class="col-3">Nama Orde</dt>
+                <dd class="col-8">: 1324213431</dd>
+            </dl>
+        </div>
+        <table>
+            <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Subtotal</th>
+            </tr>
+            <tr>
+                <td>Air Mineral</td>
+                <td>1</td>
+                <td>Rp. 3.000</td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <hr>
+                </td>
+            </tr>
+            <tr>
+                <td class="total">Subtotal:</td>
+                <td colspan="2" class="total">Rp. 3.000</td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <hr>
+                </td>
+            </tr>
+            <tr>
+                <td class="total">Total:</td>
+                <td colspan="2" class="total">Rp. 3.000</td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>
