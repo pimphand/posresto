@@ -11,6 +11,8 @@ $instagram = \App\System::where('key', 'instagram')->first();
 @endphp
 
 <head>
+	<meta name="viewport" content="width=57mm, initial-scale=1">
+
 	<title>Struk Kasir</title>
 	<style>
 		.body {
@@ -21,12 +23,13 @@ $instagram = \App\System::where('key', 'instagram')->first();
 		}
 
 		.container {
-			/* max-width: 57mm; */
-			/* Adjusted width for thermal paper */
-			margin: 0 auto;
+			top: 0;
+			right: 0;
+			margin: 0;
 			padding: 5px;
-			/* border: 1px solid #000; */
 			background-color: #f5f5f5;
+			max-width: 100%;
+			/* Adjusted width for thermal paper */
 		}
 
 		h2 {
@@ -98,12 +101,12 @@ $instagram = \App\System::where('key', 'instagram')->first();
         };
     </script> -->
 </head>
-@php
-function formatInt($subtotal_str) {
+{{-- @php
+function $subtotal_str) {
 
 return (int)preg_replace("/[^0-9]/", "", str_replace(".00", "", $subtotal_str));
 }
-@endphp
+@endphp --}}
 
 <body>
 	<div class="container body" style="max-width:{{ isset($sizes->panjang) ? (int)$sizes->panjang : 57 }}mm">
@@ -172,7 +175,7 @@ return (int)preg_replace("/[^0-9]/", "", str_replace(".00", "", $subtotal_str));
 				<td class="align-left" width="60%">{{$line['name']}} {{$line['product_variation']}}
 					{{$line['variation']}}</td>
 				<td class="align-right" width="30%">
-					{{formatInt($line['line_total'])}}
+					{{$line['line_total']}}
 				</td>
 			</tr>
 
@@ -185,17 +188,17 @@ return (int)preg_replace("/[^0-9]/", "", str_replace(".00", "", $subtotal_str));
 			<tr>
 				<td class="align-left">Subtotal {{ count($receipt_details->lines ?? []) }} Produk</td>
 				<td></td>
-				<td colspan="2" class="align-right">{{formatInt($receipt_details->subtotal)}}</td>
+				<td colspan="2" class="align-right">{{$receipt_details->subtotal}}</td>
 			</tr>
 			<tr>
 				<td class="align-left">Diskon (-)</td>
 				<td></td>
-				<td colspan="2" class="align-right">{{formatInt($receipt_details->discount)}}</td>
+				<td colspan="2" class="align-right">{{$receipt_details->discount}}</td>
 			</tr>
 			<tr>
 				<td class="align-left">Total Tagihan </td>
 				<td></td>
-				<td colspan="2" class="align-right">{{formatInt($receipt_details->total)}}</td>
+				<td colspan="2" class="align-right">{{$receipt_details->total}}</td>
 			</tr>
 		</table>
 		<div class="garis">
@@ -205,12 +208,12 @@ return (int)preg_replace("/[^0-9]/", "", str_replace(".00", "", $subtotal_str));
 			<tr>
 				<td class="align-left">Tunai</td>
 				<td></td>
-				<td colspan="2" class="align-right">Rp {{formatInt($receipt_details->total_paid)}}</td>
+				<td colspan="2" class="align-right">Rp {{$receipt_details->total_paid}}</td>
 			</tr>
 			<tr>
 				<td class="align-left">Total Bayar </td>
 				<td></td>
-				<td colspan="2" class="align-right">Rp {{formatInt($receipt_details->total_paid)}}</td>
+				<td colspan="2" class="align-right">Rp {{$receipt_details->total_paid}}</td>
 			</tr>
 			{{-- <tr>
 				<td class="align-left">Kembalian </td>
